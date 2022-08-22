@@ -1,21 +1,17 @@
-const { ContatosController } = require("../controller/contatosController");
-const { validarToken } = require("../middleware/validarToken");
-
-const Router = require("express").Router;
+import { Router } from 'express';
+import ContatosController from '../controller/contatosController.js';
+import validarToken from '../middleware/validarToken.js';
 
 const contatosRouter = Router();
-const contatosController = new ContatosController();
 
-contatosRouter.get("/contatos/:id", validarToken, contatosController.exibir);
-contatosRouter.get("/contatos", validarToken, contatosController.listar);
-contatosRouter.post("/contatos", validarToken, contatosController.cadastrar);
-contatosRouter.put("/contatos/:id", validarToken, contatosController.atualizar);
+contatosRouter.get('/contatos/:id', validarToken, ContatosController.exibir);
+contatosRouter.get('/contatos', validarToken, ContatosController.listar);
+contatosRouter.post('/contatos', validarToken, ContatosController.cadastrar);
+contatosRouter.put('/contatos/:id', validarToken, ContatosController.atualizar);
 contatosRouter.delete(
-  "/contatos/:id",
+  '/contatos/:id',
   validarToken,
-  contatosController.deletar
+  ContatosController.deletar,
 );
 
-module.exports = {
-  contatosRouter,
-};
+export default contatosRouter;

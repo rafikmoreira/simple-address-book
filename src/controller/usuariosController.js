@@ -1,11 +1,13 @@
-const { Usuario } = require("../banco-de-dados/modelo");
-const { sign } = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
-const { SECRET_KEY } = require("../configuracoes");
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import { Usuario } from '../banco-de-dados/modelo.js';
+import SECRET_KEY from '../configuracoes.js';
+
+const { sign } = jwt;
 
 class UsuariosController {
-  async exibir(req, res) {
-    const usuarioLogado = req.body.usuarioLogado;
+  static async exibir(req, res) {
+    const { usuarioLogado } = req.body;
 
     const perfilAtualizado = await Usuario.findOne({
       where: {
@@ -16,7 +18,7 @@ class UsuariosController {
     res.status(200).json(perfilAtualizado);
   }
 
-  async cadastrar(req, res) {
+  static async cadastrar(req, res) {
     const usuario = {
       email: req.body.email,
       senha: req.body.senha,
@@ -27,7 +29,7 @@ class UsuariosController {
     });
 
     if (usuarioCheckEmail) {
-      return res.status(401).json({ mensagem: "e-mail já cadastrado" });
+      return res.status(401).json({ mensagem: 'e-mail já cadastrado' });
     }
 
     const usuarioProtegido = await Usuario.create({
@@ -35,13 +37,13 @@ class UsuariosController {
       senha: await bcrypt.hash(usuario.senha, 8),
     });
 
-    res.status(200).json(usuarioProtegido);
+    return res.status(200).json(usuarioProtegido);
   }
 
-  async atualizar(req, res) {
-    const usuarioLogado = req.body.usuarioLogado;
+  static async atualizar(req, res) {
+    const { usuarioLogado } = req.body;
     if (!req.body.email || !req.body.senha) {
-      return res.status(422).json({ mensagem: "dados inválidos" });
+      return res.status(422).json({ mensagem: 'dados inválidos' });
     }
 
     const dados = {
@@ -59,21 +61,23 @@ class UsuariosController {
       where: { id: usuarioLogado.id },
     });
 
-    res.status(200).json(perfilAtualizado);
+    return res.status(200).json(perfilAtualizado);
   }
 
-  async deletar(req, res) {
-    const usuarioLogado = req.body.usuarioLogado;
-    const perfilAtualizado = await Usuario.destroy({
+  static async deletar(req, res) {
+    const { usuarioLogado } = req.body;
+    await Usuario.destroy({
       where: {
         id: usuarioLogado.id,
       },
     });
+
+    return res.status(200).json({ message: 'Usuário deletado' });
   }
 
-  async login(req, res) {
-    const email = req.body.email;
-    const senha = req.body.senha;
+  static async login(req, res) {
+    const { email } = req.body;
+    const { senha } = req.body;
 
     let usuario = await Usuario.findOne({ where: { email } });
 
@@ -82,18 +86,16 @@ class UsuariosController {
     const resultadoDaValidacao = await bcrypt.compare(senha, usuario.senha);
 
     if (!resultadoDaValidacao) {
-      return res.status(401).json({ mensagem: "E-mail ou senha inválidos" });
+      return res.status(401).json({ mensagem: 'E-mail ou senha inválidos' });
     }
 
     const token = sign(usuario, `${SECRET_KEY}`, {
       subject: `${usuario.email}`,
-      expiresIn: "1d",
+      expiresIn: '1d',
     });
 
     return res.status(200).json({ token });
   }
 }
 
-module.exports = {
-  UsuariosController,
-};
+export default UsuariosController;

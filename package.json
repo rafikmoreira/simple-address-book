@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "type": "module",
   "scripts": {
     "dev": "nodemon src/api.js"
   },
@@ -13,5 +14,14 @@
     "nodemon": "^2.0.19",
     "sequelize": "^6.21.3",
     "sqlite3": "^5.0.11"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/sequelize": "^4.28.14",
+    "eslint": "^7.32.0 || ^8.2.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.25.2",
+    "prettier": "^2.7.1"
   }
 }

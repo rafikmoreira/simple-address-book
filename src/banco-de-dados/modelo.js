@@ -1,18 +1,18 @@
-const { DataTypes } = require("sequelize");
-const { sequelize } = require("../sequelize");
-
 // ---------------------- TABELAS ----------------------
 
-const Usuario = sequelize.define("Usuario", {
-  email: { type: DataTypes.STRING, unique: true },
-  senha: DataTypes.STRING,
+import Sequelize from 'sequelize';
+import sequelize from '../sequelize.js';
+
+const Usuario = sequelize.define('Usuario', {
+  email: { type: Sequelize.DataTypes.STRING, unique: true },
+  senha: Sequelize.DataTypes.STRING,
 });
 
-const Contato = sequelize.define("Contato", {
-  nome: DataTypes.STRING,
-  telefone: DataTypes.NUMBER.UNSIGNED,
-  cpf: { type: DataTypes.NUMBER.UNSIGNED, unique: true },
-  email: { type: DataTypes.STRING, unique: true },
+const Contato = sequelize.define('Contato', {
+  nome: Sequelize.DataTypes.STRING,
+  telefone: Sequelize.DataTypes.NUMBER.UNSIGNED,
+  cpf: { type: Sequelize.DataTypes.NUMBER.UNSIGNED, unique: true },
+  email: { type: Sequelize.DataTypes.STRING, unique: true },
 });
 
 // ---------------------- RELACIONAMENTOS ----------------------
@@ -35,7 +35,4 @@ Contato.sync();
 
 // ---------------------- EXPORTAR MODELOS ----------------------
 
-module.exports = {
-  Contato,
-  Usuario,
-};
+export { Usuario, Contato };

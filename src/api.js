@@ -1,6 +1,6 @@
-const express = require("express");
-const { contatosRouter } = require("./rotas/contatosRotas");
-const { usuariosRouter } = require("./rotas/usuariosRotas");
+import express from 'express';
+import contatosRouter from './rotas/contatosRotas.js';
+import usuariosRouter from './rotas/usuariosRotas.js';
 
 const porta = 3000;
 const app = express();
@@ -11,5 +11,5 @@ app.use(contatosRouter);
 app.use(usuariosRouter);
 
 app.listen(porta, () => {
-  console.log("Servidor online! Porta: " + porta);
+  console.log(`Servidor online! Porta: ${porta}`);
 });

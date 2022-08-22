@@ -1,20 +1,17 @@
-const { Router } = require("express");
-const { UsuariosController } = require("../controller/usuariosController");
-const { validarToken } = require("../middleware/validarToken");
+import { Router } from 'express';
+import UsuariosController from '../controller/usuariosController.js';
+import validarToken from '../middleware/validarToken.js';
 
 const usuariosRouter = Router();
-const usuariosController = new UsuariosController();
 
-usuariosRouter.post("/login", usuariosController.login);
-usuariosRouter.get("/usuarios/perfil", validarToken, usuariosController.exibir);
-usuariosRouter.post("/usuarios", usuariosController.cadastrar);
-usuariosRouter.put("/usuarios/:id", validarToken, usuariosController.atualizar);
+usuariosRouter.post('/login', UsuariosController.login);
+usuariosRouter.get('/usuarios/perfil', validarToken, UsuariosController.exibir);
+usuariosRouter.post('/usuarios', UsuariosController.cadastrar);
+usuariosRouter.put('/usuarios/:id', validarToken, UsuariosController.atualizar);
 usuariosRouter.delete(
-  "/usuarios/:id",
+  '/usuarios/:id',
   validarToken,
-  usuariosController.deletar
+  UsuariosController.deletar,
 );
 
-module.exports = {
-  usuariosRouter,
-};
+export default usuariosRouter;
